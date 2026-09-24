@@ -1,0 +1,13 @@
+spring:
+  cloud:
+    discovery:
+      client:
+        simple:
+          instances:
+            security-manager:
+              - host: localhost
+                port: 8001
+              - host: localhost
+                port: 8002
+              - host: localhost
+                port: 8003
