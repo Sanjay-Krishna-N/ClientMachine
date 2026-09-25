@@ -1,5 +1,6 @@
 package org.pluto.clientmachine.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.pluto.clientmachine.controller.model.LoginRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +19,7 @@ import org.springframework.web.client.RestTemplate;
 
 @RestController
 @RequestMapping("/api/client")
+@Slf4j
 public class ClientController {
 
     @Value("${security-manager.v1.login}")
@@ -32,6 +34,7 @@ public class ClientController {
     @GetMapping("/login")
     public String login(LoginRequest loginRequest) {
         LoginRequest login = new LoginRequest("admin", "password123");
+        log.info("Login Request: {}", login);
         return restTemplate.postForObject(loginUrl, login, String.class);
     }
 
