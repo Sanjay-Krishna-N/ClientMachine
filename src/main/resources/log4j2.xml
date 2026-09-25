@@ -17,7 +17,7 @@
              NOTE: sys/env key names are deliberately DIFFERENT from the property name itself
              (e.g. app.name, not APP_NAME) to avoid Log4j2's self-referential interpolation
              false-positive ("Infinite loop in property interpolation") -->
-        <Property name="APP_NAME">${sys:app.name:-${env:APP_LOG_NAME:-app}}</Property>
+        <Property name="APP_NAME">${sys:app.name}</Property>
         <Property name="FILE_SIZE">${sys:LOG_FILE_SIZE:-${env:LOG_FILE_SIZE:-50MB}}</Property>
         <Property name="MAX_FILES">${sys:LOG_MAX_FILES:-${env:LOG_MAX_FILES:-10}}</Property>
         <Property name="RETENTION_DAYS">${sys:LOG_RETENTION_DAYS:-${env:LOG_RETENTION_DAYS:-30}}</Property>
@@ -46,32 +46,32 @@
             </DefaultRolloverStrategy>
         </RollingRandomAccessFile>
 
-        <RollingRandomAccessFile name="ErrorFile"
-                                 fileName="${LOG_PATH}/${APP_NAME}-error.log"
-                                 filePattern="${LOG_PATH}/archive/${APP_NAME}-error-%d{yyyy-MM-dd}-%i.log.gz"
-                                 immediateFlush="false">
-            <PatternLayout pattern="${FILE_PATTERN}"/>
-            <Filters>
-                <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
-            </Filters>
-            <Policies>
-                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
-                <SizeBasedTriggeringPolicy size="${FILE_SIZE}"/>
-            </Policies>
-            <DefaultRolloverStrategy max="${MAX_FILES}">
-                <Delete basePath="${LOG_PATH}/archive" maxDepth="1">
-                    <IfFileName glob="${APP_NAME}-error-*.log.gz"/>
-                    <IfLastModified age="${RETENTION_DAYS}d"/>
-                </Delete>
-            </DefaultRolloverStrategy>
-        </RollingRandomAccessFile>
+<!--        <RollingRandomAccessFile name="ErrorFile"-->
+<!--                                 fileName="${LOG_PATH}/${APP_NAME}-error.log"-->
+<!--                                 filePattern="${LOG_PATH}/archive/${APP_NAME}-error-%d{yyyy-MM-dd}-%i.log.gz"-->
+<!--                                 immediateFlush="false">-->
+<!--            <PatternLayout pattern="${FILE_PATTERN}"/>-->
+<!--            <Filters>-->
+<!--                <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>-->
+<!--            </Filters>-->
+<!--            <Policies>-->
+<!--                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>-->
+<!--                <SizeBasedTriggeringPolicy size="${FILE_SIZE}"/>-->
+<!--            </Policies>-->
+<!--            <DefaultRolloverStrategy max="${MAX_FILES}">-->
+<!--                <Delete basePath="${LOG_PATH}/archive" maxDepth="1">-->
+<!--                    <IfFileName glob="${APP_NAME}-error-*.log.gz"/>-->
+<!--                    <IfLastModified age="${RETENTION_DAYS}d"/>-->
+<!--                </Delete>-->
+<!--            </DefaultRolloverStrategy>-->
+<!--        </RollingRandomAccessFile>-->
 
         <Async name="AsyncFile" bufferSize="4096">
             <AppenderRef ref="RollingFile"/>
         </Async>
-        <Async name="AsyncErrorFile" bufferSize="4096">
-            <AppenderRef ref="ErrorFile"/>
-        </Async>
+<!--        <Async name="AsyncErrorFile" bufferSize="4096">-->
+<!--            <AppenderRef ref="ErrorFile"/>-->
+<!--        </Async>-->
     </Appenders>
 
     <!--
@@ -93,13 +93,13 @@
         <Logger name="org.pluto.clientmachine" additivity="false">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="AsyncFile"/>
-            <AppenderRef ref="AsyncErrorFile"/>
+<!--            <AppenderRef ref="AsyncErrorFile"/>-->
         </Logger>
 
         <Root>
             <AppenderRef ref="Console"/>
             <AppenderRef ref="AsyncFile"/>
-            <AppenderRef ref="AsyncErrorFile"/>
+<!--            <AppenderRef ref="AsyncErrorFile"/>-->
         </Root>
     </Loggers>
 
