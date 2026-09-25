@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="ClientMachineApplication" type="CompoundRunConfigurationType">
+    <toRun name="ClientMachineApplication-8010" type="SpringBootApplicationConfigurationType" />
+    <toRun name="ClientMachineApplication-8011" type="SpringBootApplicationConfigurationType" />
+    <method v="2" />
+  </configuration>
+</component>
